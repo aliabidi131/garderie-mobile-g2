@@ -15,8 +15,16 @@ class MaGarderieApp extends StatelessWidget {
       title: 'Ma Garderie',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4F9DF8)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4F9DF8),
+          surface: const Color(0xFFFFFBF7),
+        ),
         useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFFFFBF7),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF4F9DF8),
+          foregroundColor: Colors.white,
+        ),
       ),
       home: const SplashScreen(),
     );
@@ -37,12 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute<void>(
-          builder: (_) => Scaffold(
-            appBar: AppBar(title: const Text('Ma Garderie')),
-            body: const Center(child: Text('Ma Garderie')),
-          ),
-        ),
+        MaterialPageRoute<void>(builder: (_) => const HomePage()),
       );
     });
   }
@@ -67,22 +70,115 @@ class _SplashScreenState extends State<SplashScreen> {
                 Text(
                   'Ma Garderie',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: const Color(0xFF2769B5),
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: const Color(0xFF2769B5),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Bienvenue dans notre garderie',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: const Color(0xFF5D6472),
-                      ),
+                  style: Theme.of(context).textTheme.titleMedium
+                      ?.copyWith(color: const Color(0xFF5D6472)),
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Ma Garderie'),
+        actions: [
+          IconButton(
+            tooltip: 'Recherche',
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+          ),
+          IconButton(
+            tooltip: 'Notifications',
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none),
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            children: [
+              const DrawerHeader(
+                margin: EdgeInsets.zero,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.child_care,
+                        size: 48,
+                        color: Color(0xFF4F9DF8),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Ma Garderie',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home_outlined),
+                title: const Text('Accueil'),
+                onTap: () => Navigator.of(context).pop(),
+              ),
+              ListTile(
+                leading: const Icon(Icons.restaurant_menu),
+                title: const Text('Menus'),
+                onTap: () => Navigator.of(context).pop(),
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: const Text('À propos'),
+                onTap: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Menus du jour',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: const Color(0xFF263858),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Expanded(
+              child: Center(child: Text('Les menus seront affichés ici.')),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Ajouter un menu',
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }
