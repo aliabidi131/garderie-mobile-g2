@@ -124,8 +124,26 @@ const menusDuJour =
       ),
     ];
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _selectedDestination = 'Accueil';
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void _selectDestination(String destination) {
+    setState(() => _selectedDestination = destination);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,12 +153,12 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: 'Recherche',
-            onPressed: () {},
+            onPressed: () => _showMessage('Rechercher un menu'),
             icon: const Icon(Icons.search),
           ),
           IconButton(
             tooltip: 'Notifications',
-            onPressed: () {},
+            onPressed: () => _showMessage('Aucune notification'),
             icon: const Icon(Icons.notifications_none),
           ),
         ],
@@ -175,106 +193,115 @@ class HomePage extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.home_outlined),
                 title: const Text('Accueil'),
-                onTap: () => Navigator.of(context).pop(),
+                selected: _selectedDestination == 'Accueil',
+                onTap: () => _selectDestination('Accueil'),
               ),
               ListTile(
                 leading: const Icon(Icons.restaurant_menu),
                 title: const Text('Menus'),
-                onTap: () => Navigator.of(context).pop(),
+                selected: _selectedDestination == 'Menus',
+                onTap: () => _selectDestination('Menus'),
               ),
               ListTile(
                 leading: const Icon(Icons.info_outline),
                 title: const Text('À propos'),
-                onTap: () => Navigator.of(context).pop(),
+                selected: _selectedDestination == 'À propos',
+                onTap: () => _selectDestination('À propos'),
               ),
             ],
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Menus du jour',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: const Color(0xFF263858),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemCount: menusDuJour.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 10),
-                itemBuilder: (context, index) {
-                  final menu = menusDuJour[index];
-                  return Card(
-                    margin: EdgeInsets.zero,
-                    elevation: 1,
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 14,
-                        ),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 26,
-                              backgroundColor: const Color(0xFFEAF3FF),
-                              child: Text(
-                                menu.icone,
-                                style: const TextStyle(fontSize: 25),
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    menu.titre,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    menu.description,
-                                    style: TextStyle(
-                                      color: Colors.blueGrey.shade600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.chevron_right,
-                              color: Color(0xFF718096),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _selectedDestination == 'À propos'
+          ? const Center(child: Text('Ma Garderie — Gestion des menus'))
+          : _buildMenus(),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Ajouter un menu',
-        onPressed: () {},
+        onPressed: () => _showMessage('Ajouter un menu'),
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildMenus() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Menus du jour',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: const Color(0xFF263858),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: menusDuJour.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
+              itemBuilder: (context, index) {
+                final menu = menusDuJour[index];
+                return Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 1,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => _showMessage(menu.titre),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 26,
+                            backgroundColor: const Color(0xFFEAF3FF),
+                            child: Text(
+                              menu.icone,
+                              style: const TextStyle(fontSize: 25),
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  menu.titre,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  menu.description,
+                                  style: TextStyle(
+                                    color: Colors.blueGrey.shade600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.chevron_right,
+                            color: Color(0xFF718096),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
