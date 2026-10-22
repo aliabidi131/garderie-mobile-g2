@@ -1,11 +1,11 @@
 {
-    "name": "ma_garderie",
-    "short_name": "ma_garderie",
+    "name": "Ma Garderie",
+    "short_name": "Ma Garderie",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Gestion des menus de la garderie Ma Garderie.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
