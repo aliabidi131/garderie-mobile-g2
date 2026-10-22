@@ -21,7 +21,7 @@ fusionnée dans `main` :
 |---|---|---|
 | 1 | Dépôt public `garderie-mobile-g2` | Dépôt cible : `https://github.com/aliabidi131/garderie-mobile-g2` |
 | 2 | `feature/init-project` | Application Flutter « Ma Garderie » dans `lib/main.dart` |
-| 3 | Exécuter, commiter, fusionner | Exécution Flutter et tests; commit et fusion locale dans `main` |
+| 3 | Exécuter, commiter, fusionner | Application exécutée dans Chrome au format mobile et tests passés; aucun émulateur Android n'était disponible ici |
 | 4 | `feature/splash-screen` | Image `assets/garderie_accueil.png`, nom, texte de bienvenue et délai de trois secondes |
 | 5 | Commit et fusion du splash | Commit propre à `feature/splash-screen`, fusion sans fast-forward dans `main` |
 | 6 | `feature/home-page` | AppBar, recherche, notifications, Drawer, FAB et titre de section |
