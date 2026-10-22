@@ -90,6 +90,40 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
+const menusDuJour =
+    <({int id, String titre, String description, String icone})>[
+      (
+        id: 1,
+        titre: 'Petit déjeuner',
+        description: 'Lait, céréales et fruits',
+        icone: '🥣',
+      ),
+      (
+        id: 2,
+        titre: 'Déjeuner',
+        description: 'Poulet, riz et légumes',
+        icone: '🍲',
+      ),
+      (
+        id: 3,
+        titre: 'Goûter',
+        description: 'Biscuit et compote de pomme',
+        icone: '🍪',
+      ),
+      (
+        id: 4,
+        titre: 'Jus de fruits',
+        description: "Jus d'orange naturel",
+        icone: '🍊',
+      ),
+      (
+        id: 5,
+        titre: 'Fruits frais',
+        description: 'Une sélection de fruits de saison',
+        icone: '🍎',
+      ),
+    ];
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -169,8 +203,70 @@ class HomePage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Expanded(
-              child: Center(child: Text('Les menus seront affichés ici.')),
+            Expanded(
+              child: ListView.separated(
+                itemCount: menusDuJour.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  final menu = menusDuJour[index];
+                  return Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 1,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 14,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 26,
+                              backgroundColor: const Color(0xFFEAF3FF),
+                              child: Text(
+                                menu.icone,
+                                style: const TextStyle(fontSize: 25),
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    menu.titre,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    menu.description,
+                                    style: TextStyle(
+                                      color: Colors.blueGrey.shade600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.chevron_right,
+                              color: Color(0xFF718096),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
